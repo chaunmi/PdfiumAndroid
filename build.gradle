@@ -44,7 +44,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 26
         versionCode 1
-        versionName "1.9.0"
+        versionName libraryVersion
     }
     buildTypes {
         release {
@@ -59,6 +59,22 @@ android {
             jniLibs.srcDir 'src/main/libs'
         }
     }
+
+}
+
+android.libraryVariants.all { variant ->
+    variant.outputs.all {
+        //在这里修改apk文件名，引号内的字符串都可以随便定义
+        if(variant.buildType.name.toLowerCase().contains("release")) {
+            outputFileName = "Pdfium_${variant.buildType.name}_V${libraryVersion}_${buildTime()}.aar"
+        }
+    }
+}
+
+def buildTime(){
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddHHmm')
+    return formattedDate
 }
 
 repositories {
